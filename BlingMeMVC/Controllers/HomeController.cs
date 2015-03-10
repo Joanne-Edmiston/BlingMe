@@ -21,8 +21,9 @@
         {
 
             var repo = uow.GetRepository<Bracelet>();
+            var loggedOnUserId = GetLoggedOnUserId();
 
-            var modelBracelet = repo.Get(filter: b => b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty) 
+            var modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
                 && b.Type == BraceletType.Person).Single();
 
 
@@ -53,7 +54,8 @@
             var charms = charmsRepo.Get(filter: c => c.ParentID == modelBracelet.ID);
             modelBracelet.Charms = charms.ToList();
 
-            return View(new BraceletView(modelBracelet));
+
+            return View(new BraceletView(modelBracelet, GetLoggedOnUserId()));
         }
 
         public ActionResult _Search()
@@ -65,6 +67,12 @@
         public ActionResult _Search(string query)
         {
             return RedirectToRoute("Bracelet", new { id = Convert.ToInt32(query) });
+        }
+
+
+        private string GetLoggedOnUserId()
+        {
+            return User.Identity.Name.Replace("AVELO\\", string.Empty);
         }
     }
 }
