@@ -2,19 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title's bracelet on BlingMe</title>
-    <link href="../favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
-    @Styles.Render("../Content/css")
-    @Scripts.Render("../bundles/modernizr")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 
-    <link href="../Content/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="../Content/bootstrap-3.3.2-dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../Content/bootstrap-combobox.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-3.3.2-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
 
-    <script src="../Content/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
-    <script src="../Content/bootstrap-3.3.2-dist/js/jquery-1.11.2.min.js"></script>
-    <script src="../Content/bootstrap-combobox.js"></script>
+    <script src="~/Content/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    <script src="~/Content/bootstrap-3.3.2-dist/js/jquery-1.11.2.min.js"></script>
 </head>
 <body>
     <header>
@@ -28,13 +27,7 @@
                 }
             </style>
             <div class="float-right">
-                <form method="POST">
-                    <select name="query" class="combobox">
-                        <option value="">Search</option>
-                        @foreach (var s in ViewBag.SearchStrings)
-                        { <text><option value="@s.ID">@s.Name</option></text> }
-                    </select>
-                </form>
+                @Html.Action("_Search", "Home")
             </div>
         </div>
     </header>
@@ -54,11 +47,5 @@
 
     @RenderSection("scripts", required: false)
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.combobox').combobox();
-            $('.combobox')
-        });
-</script>
 </body>
 </html>
