@@ -69,7 +69,10 @@ Temporary Items
 /BlingMeMVC/obj/Debug/BlingMeMVC.pdb
 /BlingMeMVC/bin/BlingMe.Domain.pdb
 /BlingMeMVC/bin/BlingMe.Domain.EF.pdb
+/BlingMe.Domain.EF/obj/Debug/BlingMe.Domain.csproj.FileListAbsolute.txt
 /BlingMe.Domain/obj/Debug/BlingMe.Domain.csproj.FileListAbsolute.txt
+/BlingMe.Test/obj/Debug/BlingMe.Domain.csproj.FileListAbsolute.txt
+/BlingMeMVC/obj/Debug/BlingMeMVC.csproj.FileListAbsolute.txt
 *.StyleCop
 *.cache
 TemporaryGeneratedFile*
