@@ -1,8 +1,10 @@
 ﻿namespace BlingMeMVC.Controllers
 {
+    using System;
     using System.Data;
     using System.Linq;
     using System.Web.Mvc;
+    using System.Web.Routing;
 
     using BlingMeMVC.Models.ViewModels;
     using BlingMe.Domain.EF;
@@ -38,7 +40,6 @@
              */
         }
 
-        [HttpGet]
         [AllowAnonymous]
         public ActionResult Bracelet(int id)
         {
@@ -55,28 +56,15 @@
             return View(new BraceletView(modelBracelet));
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Bracelet(int id, string query)
-        {
-            var repo = uow.GetRepository<Bracelet>();
-            var modelBracelet = repo.Get(filter: b => b.ID.ToString() == query).FirstOrDefault();
-
-            /*
-            var mock = new Mocks();
-            var modelBracelet = (from b in mock.Bracelets where b.ID.ToString() == query select b).FirstOrDefault();
-            */
-
-            return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
-        }
-
-        [AllowAnonymous]
         public ActionResult _Search()
         {
-            var repo = uow.GetRepository<Bracelet>();
-            var model = (from b in repo.Get() select b).ToList();
+            return PartialView(from b in uow.GetRepository<Bracelet>().Get() select b);
+        }
 
-            return PartialView(model);
+        [HttpPost]
+        public ActionResult _Search(string query)
+        {
+            return RedirectToRoute("Bracelet", new { id = Convert.ToInt32(query) });
         }
     }
 }

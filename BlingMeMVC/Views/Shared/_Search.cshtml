@@ -1,18 +1,23 @@
 ﻿@model IEnumerable<BlingMe.Domain.Entities.Bracelet>
 
-<script src="../Content/bootstrap-combobox.js"></script>
+<link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
+<script src="~/Content/bootstrap-combobox.js"></script>
 
-<form method="POST">
-    <select name="query" class="combobox">
-        <option value="">Search</option>
-        @foreach (var b in Model)
-        { <text><option value="@b.ID">@b.Name</option></text> }
-    </select>
-</form>
+@using (Html.BeginForm("_Search", "Home", FormMethod.Post))
+{
+    <text>
+            <select name="query" class="combobox">
+                <option value="">Search</option>
+                @foreach (var b in Model)
+                {
+                    <text><option value="@b.ID">@b.Name</option></text>
+                }
+            </select>
+    </text>
+}
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.combobox').combobox();
-            $('.combobox')
-        });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.combobox').combobox();
+    });
 </script>
