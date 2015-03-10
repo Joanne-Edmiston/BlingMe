@@ -1,5 +1,6 @@
 ﻿namespace BlingMeMVC.Controllers
 {
+    using System.Data;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -51,15 +52,6 @@
             var charms = charmsRepo.Get(filter: c => c.ParentID == modelBracelet.ID);
             modelBracelet.Charms = charms.ToList();
 
-            ViewBag.SearchStrings = from b in repo.Get()
-                                    select b;
-
-            /*
-            var modelBracelet = (from b in mock.Bracelets where b.ID == id select b).FirstOrDefault();
-
-            ViewBag.SearchStrings = from b in mock.Bracelets
-                                    select b;
-            */
             return View(new BraceletView(modelBracelet));
         }
 
@@ -76,6 +68,15 @@
             */
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
+        }
+
+        [AllowAnonymous]
+        public ActionResult _Search()
+        {
+            var repo = uow.GetRepository<Bracelet>();
+            var model = (from b in repo.Get() select b).ToList();
+
+            return PartialView(model);
         }
     }
 }

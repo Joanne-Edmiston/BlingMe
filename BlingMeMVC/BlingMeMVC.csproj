@@ -181,6 +181,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BraceletController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LyncController.cs" />
     <Compile Include="Global.asax.cs">
@@ -319,6 +320,11 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Bracelet\Create.cshtml" />
+    <Content Include="Views\Bracelet\Edit.cshtml" />
+    <Content Include="Views\Bracelet\Delete.cshtml" />
+    <Content Include="Views\Bracelet\Index.cshtml" />
+    <Content Include="Views\Shared\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,8 @@
             routes.MapRoute(
                 name: "Bracelet",
                 url: "Bracelet/{id}",
-                defaults: new { controller = "Home", action = "Bracelet" });
+                defaults: new { controller = "Home", action = "Bracelet" },
+                constraints: new { id = @"\d" });
 
             routes.MapRoute(
                 name: "Default",
