@@ -74,3 +74,5 @@ Temporary Items
 /BlingMeMVC/bin/BlingMe.Domain.pdb
 /BlingMeMVC/bin/BlingMe.Domain.EF.pdb
 /BlingMe.Domain/obj/Debug/BlingMe.Domain.csproj.FileListAbsolute.txt
+/BlingMeMVC/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+/BlingMeMVC/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
