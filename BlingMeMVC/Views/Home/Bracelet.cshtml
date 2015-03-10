@@ -1,0 +1,352 @@
+﻿@using BlingMe.Domain.Entities
+@using BlingMeMVC
+@model BlingMeMVC.Models.ViewModels.BraceletView
+@{
+    ViewBag.Title = Model.Name;
+}
+<table>
+    
+    <tr><td rowspan="2"  style="padding-right: 30px;">
+            @{
+                var imgurl = Model.Type.ToString().ToLower();
+                imgurl = "../Content/Images/Charm_" + imgurl + ".png";
+                var imgsize = 100;
+            }
+            <img src="@imgurl" height="@imgsize" width="@imgsize"/>
+        </td><td>
+                 <h2>@Model.Name</h2></td></tr>
+    <tr><td>@if (null == Model.Description || Model.Description.Length <= 1)
+            {
+                <h3>A @Model.Type.ToString().ToLower()</h3>
+            }
+            else
+            {
+                <h3>@Model.Description</h3>
+            }</td></tr>
+</table>
+@{
+
+
+
+}
+
+<div id="SVGdiv" style="padding-top:0;margin-top:0;text-align: center">
+</div>
+
+<link href="../Content/jquery.contextMenu.css" rel="stylesheet" />
+<script src="../Content/jquery.contextMenu.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+
+    $(document).ready(function() {
+        buildBracelet();
+
+        $('.miniLabel').each(function() {
+            var email = $(this).attr("data-email");
+            $(this).contextMenu('context-menu-1', {
+                'Send Email': {
+                    click: function() {
+                        window.location = "mailto:"+email;
+                    },
+                    klass: "menu-item-1"
+                },
+                'Start Lync Conversation': {
+                    click: function() {
+                        window.open("../Lync/Start/?email="+email);
+                    },
+                    klass: "menu-item-2"
+                }
+            });
+        });
+
+        switch('@Model.Type.ToString()') {
+            case '@BraceletType.Person.ToString()':
+                $('#centreLabel').contextMenu('context-menu-1', {
+                    'Send Email': {
+                        click: function() {
+                            window.location = "mailto:@Model.Email";
+                        },
+                        klass: "menu-item-1"
+                    },
+                    'Start Lync Conversation': {
+                        click: function() {
+                            @{
+                                var url = Model.Email;
+                                url = "../Lync/Start/?email=" + url;
+                            }
+                            window.open("@url");
+                        },
+                        klass: "menu-item-2"
+                    },
+                    'Email All Direct Reports': {
+                        click: function() {
+                            window.location = "mailto:@Model.DirectReportEmails";
+                    },
+                        klass: "menu-item-3"
+                    },
+                    'Lync All Direct Reports': {
+                            @{
+                                url = Model.DirectReportEmails;
+                                url = "../Lync/StartMulti/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-4"
+                    },'Hold Meeting With Direct Reports': {
+                            @{
+                                url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
+                                url = url.Replace(".", " ");
+                                url = "../Lync/NewMeeting/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-5"
+                    }
+                    
+                    
+                });
+                break;
+            case '@BraceletType.Group.ToString()':
+                $('#centreLabel').contextMenu('context-menu-1', {
+                    'Send Group Email': {
+                        click: function() {
+                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
+                        },
+                        klass: "menu-item-1"
+                    },
+                    'Start Group Lync Conversation': {
+                            @{
+                                url = Model.DirectReportEmails;
+                                url = "../Lync/StartMulti/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-2"
+                    }
+                });
+                break;
+            case '@BraceletType.Location.ToString()':
+                $('#centreLabel').contextMenu('context-menu-1', {
+                    'Book Meeting': {
+                            @{
+                                url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
+                                url = url.Replace(".MeetingRoom", " ");
+                                url = url.Replace(".", " ");
+                                url = "../Lync/NewMeeting/?emails=" + url;
+                            }
+                        click: function() {
+                            window.location = "@url";
+                        },
+                        klass: "menu-item-1"
+                    },
+                    'Send Group Email': {
+                        click: function() {
+                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
+                        },
+                        klass: "menu-item-2"
+                    },
+                    'Start Group Lync Conversation': {
+                            @{
+                                url = Model.DirectReportEmails;
+                                url = "../Lync/StartMulti/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-3"
+                    }
+                });
+                break;
+            case '@BraceletType.Interest.ToString()':
+                $('#centreLabel').contextMenu('context-menu-1', {
+                    'Send Group Email': {
+                        click: function() {
+                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
+                        },
+                        klass: "menu-item-1"
+                    },
+                    'Start Group Lync Conversation': {
+                            @{
+                                url = Model.DirectReportEmails;
+                                url = "../Lync/StartMulti/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-2"
+                    }
+                });
+                break;
+            case '@BraceletType.Project.ToString()':
+                $('#centreLabel').contextMenu('context-menu-1', {
+                    'Book Meeting': {
+                            @{
+                                url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
+                                url = url.Replace(".MeetingRoom", " ");
+                                url = url.Replace(".", " ");
+                                url = "../Lync/NewMeeting/?emails=" + url;
+                            }
+                        click: function() {
+                            window.location = "@url";
+                        },
+                        klass: "menu-item-1"
+                    },
+                    'Send Group Email': {
+                        click: function() {
+                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
+                        },
+                        klass: "menu-item-2"
+                    },
+                    'Start Group Lync Conversation': {
+                            @{
+                                url = Model.DirectReportEmails;
+                                url = "../Lync/StartMulti/?emails=" + url;
+                            }
+                        click: function() {
+                            window.open("@url");
+                        },
+                        klass: "menu-item-3"
+                    }
+                });
+                break;
+        }
+    });
+
+    $(window).resize(function() {
+        buildBracelet();
+    });
+
+    function buildBracelet() {
+        var svgNS = "http://www.w3.org/2000/svg";
+        var xlinkNS = "http://www.w3.org/1999/xlink";
+
+        var maxsize = Math.min(window.innerWidth, window.innerHeight);
+
+        var circleRadius = maxsize / 2 - 190;
+        var charmSizeRatio = .25;
+        var mainSvgSize = circleRadius * 2.5;
+        var mainSvgHalf = mainSvgSize / 2;
+        var charmSize = charmSizeRatio * circleRadius;
+
+        var div = document.getElementById('SVGdiv');
+
+        var svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute("width", mainSvgSize);
+        svg.setAttribute("height", mainSvgSize);
+        div.innerHTML= "";
+        div.appendChild(svg);
+
+        var newCircle = document.createElementNS(svgNS, 'circle');
+        newCircle.setAttribute("id", "prettybracelet");
+        newCircle.setAttribute("cx", mainSvgHalf);
+        newCircle.setAttribute("cy", mainSvgHalf);
+        newCircle.setAttribute("r", circleRadius);
+        newCircle.setAttribute("stroke", "#00FFFF");
+        newCircle.setAttribute("stroke-width", "3");
+        newCircle.setAttribute("fill", "transparent");
+        svg.appendChild(newCircle); 
+
+        var innerCircle = document.createElementNS(svgNS, 'circle');
+        innerCircle.setAttribute("id", "prettyinnerbracelet");
+        innerCircle.setAttribute("cx", mainSvgHalf);
+        innerCircle.setAttribute("cy", mainSvgHalf);
+        innerCircle.setAttribute("r", circleRadius-3);
+        innerCircle.setAttribute("stroke", "#0066FF");
+        innerCircle.setAttribute("stroke-width", "3");
+        innerCircle.setAttribute("fill", "transparent");
+        svg.appendChild(innerCircle); 
+        var outerCircle = document.createElementNS(svgNS, 'circle');
+        outerCircle.setAttribute("id", "prettyouterbracelet");
+        outerCircle.setAttribute("cx", mainSvgHalf);
+        outerCircle.setAttribute("cy", mainSvgHalf);
+        outerCircle.setAttribute("r", circleRadius+3);
+        outerCircle.setAttribute("stroke", "#0066FF");
+        outerCircle.setAttribute("stroke-width", "3");
+        outerCircle.setAttribute("fill", "transparent");
+        svg.appendChild(outerCircle); 
+
+        var labelSize = charmSize * 2;
+        var labelx = mainSvgHalf - labelSize / 2;
+        var labely = mainSvgHalf - labelSize / 2 - 20;
+        var newImage = document.createElementNS(svgNS, 'image');
+        newImage.setAttribute("id", "centreLabel");
+        newImage.setAttribute("class", "target1");
+        newImage.setAttribute("height", labelSize);
+        newImage.setAttribute("width", labelSize);
+        newImage.setAttribute("x", labelx);
+        newImage.setAttribute("y", labely);
+        newImage.setAttribute("background-color", "red");
+        newImage.setAttributeNS(xlinkNS, "href", "../Content/Images/Charm_"+'@Model.Type.ToString().ToLower()'+".png");
+        svg.appendChild(newImage);
+
+        var textX = labelx + labelSize/2;
+        var textY = labely + labelSize + 20;
+        var newText = document.createElementNS(svgNS, 'text');
+        newText.setAttribute("x", textX);
+        newText.setAttribute("y", textY);
+        newText.setAttribute("style", "font-weight:bold; text-anchor:middle; font-size:2em; font-family:sans-serif; fill:black; stroke:blue; stroke-width:1;");
+        newText.textContent = '@Model.Name';
+        svg.appendChild(newText);
+        
+
+        @foreach (var pic in Model.CharmPics)
+        {
+        <text>
+        drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgSize, @pic.ID, '@pic.Name', '@pic.Email')
+        </text>
+        }
+
+    }
+
+
+    function drawCharm(imageUrl, degrees, svg, charmSize, circleRadius, mainSvgSize, targetID, targetName, targetEmail) {
+        var svgNS = "http://www.w3.org/2000/svg";
+        var xlinkNS = "http://www.w3.org/1999/xlink";
+
+        // Top left corner of square is 0,0
+        // Centre of circle is mainSvgSize/2,mainSvgSize/2
+        // Radius of circle is circleRadius
+
+        var circleCentreX = mainSvgSize / 2;
+        var circleCentreY = mainSvgSize / 2;
+
+        // 0 degrees is the right hand side of the circle
+        // proceeding clockwise from there (90, 180, 270)
+        // 270 or -90 degrees is the top of the circle, for parent charms
+
+        var radians = (degrees / 360) * 2 * Math.PI;
+        var charmCentreX = circleRadius * Math.cos(radians) + circleCentreX;
+        var charmCentreY = circleRadius * Math.sin(radians) + circleCentreY;
+
+        var charmx = charmCentreX - charmSize / 2;
+        var charmy = charmCentreY - charmSize / 2;
+
+        var newLink = document.createElementNS(svgNS, 'a');
+        newLink.setAttributeNS(xlinkNS, "xlink:href", "../Bracelet/"+targetID);
+        svg.appendChild(newLink);
+
+        var newImage = document.createElementNS(svgNS, 'image');
+        newImage.setAttribute("height", charmSize);
+        newImage.setAttribute("width", charmSize);
+        newImage.setAttribute("id", targetID);
+        newImage.setAttribute("data-email", targetEmail);
+        newImage.setAttribute("class", "miniLabel");
+        newImage.setAttribute("x", charmx);
+        newImage.setAttribute("y", charmy);
+        newImage.setAttributeNS(xlinkNS, "href", imageUrl);
+        newLink.appendChild(newImage);
+
+        var textX = charmx + charmSize/2;
+        var textY = charmy + charmSize + 10;
+        var newText = document.createElementNS(svgNS, 'text');
+        newText.setAttribute("x", textX);
+        newText.setAttribute("y", textY);
+        newText.setAttribute("style", "font-weight:bold; text-anchor:middle; font-size:1em; font-family:sans-serif; fill:black");
+        newText.textContent = targetName;
+        newLink.appendChild(newText);
+    }
+    
+</script>
