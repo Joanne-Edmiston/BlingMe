@@ -18,8 +18,9 @@
         {
 
             var repo = uow.GetRepository<Bracelet>();
+            var loggedOnUserId = GetLoggedOnUserId();
 
-            var modelBracelet = repo.Get(filter: b => b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty) 
+            var modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
                 && b.Type == BraceletType.Person).Single();
 
 
@@ -60,7 +61,7 @@
             ViewBag.SearchStrings = from b in mock.Bracelets
                                     select b;
             */
-            return View(new BraceletView(modelBracelet));
+            return View(new BraceletView(modelBracelet, GetLoggedOnUserId()));
         }
 
         [HttpPost]
@@ -76,6 +77,12 @@
             */
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
+        }
+
+
+        private string GetLoggedOnUserId()
+        {
+            return User.Identity.Name.Replace("AVELO\\", string.Empty);
         }
     }
 }
