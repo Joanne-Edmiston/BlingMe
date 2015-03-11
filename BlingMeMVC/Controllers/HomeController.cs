@@ -7,7 +7,7 @@
     using BlingMeMVC.Models.ViewModels;
     using BlingMe.Domain.EF;
     using BlingMe.Domain.Entities;
-using System.Collections.Generic;
+    using System.Collections.Generic;
 
 
     public class HomeController : Controller
@@ -18,33 +18,21 @@ using System.Collections.Generic;
         [AllowAnonymous]
         public ActionResult Index()
         {
-
             var repo = uow.GetRepository<Bracelet>();
-            Bracelet modelBracelet;
+            Bracelet modelBracelet = GetLoggedOnUserBracelet();
 
-            try
+            if (null == modelBracelet)
             {
-                modelBracelet = GetLoggedOnUserBracelet();
-
+                return RedirectToAction("Create", "Bracelet");
             }
-            catch (Exception e)
-            {
-                if (e.Message == "Sequence contains no elements")
-                {
-                    return RedirectToAction("Create", "Bracelet");
-                }
-                return HttpNotFound();
-            }
-
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
-            
         }
 
         [AllowAnonymous]
         public ActionResult Bracelet(int id)
         {
-            
+
             var repo = uow.GetRepository<Bracelet>();
             var charmsRepo = uow.GetRepository<Charm>();
 
@@ -85,11 +73,11 @@ using System.Collections.Generic;
             charmRepo.Insert(charm);
             uow.Save();
 
-            return RedirectToAction("Bracelet", new { id = parentBraceletId});
+            return RedirectToAction("Bracelet", new { id = parentBraceletId });
         }
 
         [HttpPost]
-        public ActionResult RemoveUser(int parentBraceletId, int userBraceletId )
+        public ActionResult RemoveUser(int parentBraceletId, int userBraceletId)
         {
             var braceletRepo = uow.GetRepository<Bracelet>();
             var charmRepo = uow.GetRepository<Charm>();
@@ -98,10 +86,10 @@ using System.Collections.Generic;
             var userBracelet = braceletRepo.GetByID(userBraceletId);
 
             // Find charms where the user is a child 
-            var charms = charmRepo.Get(filter: c => c.ParentID == parentBraceletId && c.Children.Any( i => i.ID == userBraceletId),
+            var charms = charmRepo.Get(filter: c => c.ParentID == parentBraceletId && c.Children.Any(i => i.ID == userBraceletId),
                 includeProperties: "Children").ToList();
 
-            charms.ForEach(c => 
+            charms.ForEach(c =>
                 {
                     c.Children.Remove(userBracelet);
                     if (c.Children.Count == 0)
