@@ -20,13 +20,12 @@ using System.Collections.Generic;
         {
 
             var repo = uow.GetRepository<Bracelet>();
-
             Bracelet modelBracelet;
 
             try
             {
-                modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
-                   && b.Type == BraceletType.Person).Single();
+                modelBracelet = GetLoggedOnUserBracelet();
+
             }
             catch (Exception e)
             {
@@ -40,16 +39,6 @@ using System.Collections.Generic;
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
             
-            /*
-            var mock = new Mocks();
-            var braceletId = (from b in mock.Bracelets
-                              where b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty)
-                              select b.ID).FirstOrDefault();
-
-            // get the user's own bracelet number from EF and redirect to it
-            // User.Identity.Name gives you their Avelo name so this is easy enough
-            return RedirectToRoute("Bracelet", new { id = braceletId });
-             */
         }
 
         [AllowAnonymous]
