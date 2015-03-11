@@ -58,160 +58,206 @@
             });
         });
 
+        var options = {};
+        var addMeMenuOption = {
+            click: function() {
+
+                $.ajax({
+                    url: '../home/AddUser',
+                    type: 'POST',
+                    data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
+                    success: function(result) {
+                    }
+                });
+            },
+            klass: "menu-item-1"
+        };
+
+        var removeMeMenuOption = {
+            click: function() {
+
+                $.ajax({
+                    url: '../home/RemoveUser',
+                    type: 'POST',
+                    data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
+                    success: function(result) {
+                    }
+                });
+            },
+            klass: "menu-item-1"
+        };
+
+        if ('@Model.LoggedOnUserIsChild' === '@true'){
+            options['Remove Me'] = {
+                click: function() {
+
+
+                    $.ajax({
+                        url: '../home/RemoveUser',
+                        type: 'POST',
+                        data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
+                        success: function(result) {
+                        }
+                    });
+                },
+                klass: "menu-item-1"
+            };
+        }
+        else{
+            options['Add Me'] = addMeMenuOption;
+        };
+
         switch('@Model.Type.ToString()') {
             case '@BraceletType.Person.ToString()':
-                $('#centreLabel').contextMenu('context-menu-1', {
-                    'Send Email': {
-                        click: function() {
-                            window.location = "mailto:@Model.Email";
-                        },
-                        klass: "menu-item-1"
+                options['Send Email'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.Email";
                     },
-                    'Start Lync Conversation': {
-                        click: function() {
-                            @{
+                    klass: "menu-item-1"
+                };
+                options ['Start Lync Conversation'] = {
+                    click: function() {
+                        @{
                                 var url = Model.Email;
                                 url = "../Lync/Start/?email=" + url;
                             }
-                            window.open("@url");
-                        },
-                        klass: "menu-item-2"
+                        window.open("@url");
                     },
-                    'Email All Direct Reports': {
-                        click: function() {
-                            window.location = "mailto:@Model.DirectReportEmails";
+                    klass: "menu-item-2"
+                };
+                options ['Email All Direct Reports'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.DirectReportEmails";
                     },
-                        klass: "menu-item-3"
-                    },
-                    'Lync All Direct Reports': {
-                            @{
+                    klass: "menu-item-3"
+                };
+                options['Lync All Direct Reports'] = {
+                    @{
                                 url = Model.DirectReportEmails;
                                 url = "../Lync/StartMulti/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-4"
-                    },'Hold Meeting With Direct Reports': {
-                            @{
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-4"
+                };
+                options['Hold Meeting With Direct Reports'] = {
+                    @{
                                 url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
                                 url = url.Replace(".", " ");
                                 url = "../Lync/NewMeeting/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-5"
-                    }
-                    
-                    
-                });
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-5"
+                };
+
                 break;
             case '@BraceletType.Group.ToString()':
-                $('#centreLabel').contextMenu('context-menu-1', {
-                    'Send Group Email': {
-                        click: function() {
-                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
-                        },
-                        klass: "menu-item-1"
+                options['Send Group Email'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
                     },
-                    'Start Group Lync Conversation': {
-                            @{
+                    klass: "menu-item-1"
+                };
+                options['Start Group Lync Conversation'] = {
+                    @{
                                 url = Model.DirectReportEmails;
                                 url = "../Lync/StartMulti/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-2"
-                    }
-                });
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-2"
+                };
                 break;
             case '@BraceletType.Location.ToString()':
-                $('#centreLabel').contextMenu('context-menu-1', {
-                    'Book Meeting': {
-                            @{
+                options['Book Meeting'] = {
+                    @{
                                 url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
                                 url = url.Replace(".MeetingRoom", " ");
                                 url = url.Replace(".", " ");
                                 url = "../Lync/NewMeeting/?emails=" + url;
                             }
-                        click: function() {
-                            window.location = "@url";
-                        },
-                        klass: "menu-item-1"
+                    click: function() {
+                        window.location = "@url";
                     },
-                    'Send Group Email': {
-                        click: function() {
-                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
-                        },
-                        klass: "menu-item-2"
+                    klass: "menu-item-1"
+                };
+                options['Send Group Email'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
                     },
-                    'Start Group Lync Conversation': {
-                            @{
+                    klass: "menu-item-2"
+                };
+                options['Start Group Lync Conversation'] = {
+                    @{
                                 url = Model.DirectReportEmails;
                                 url = "../Lync/StartMulti/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-3"
-                    }
-                });
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-3"
+                };
                 break;
             case '@BraceletType.Interest.ToString()':
-                $('#centreLabel').contextMenu('context-menu-1', {
-                    'Send Group Email': {
-                        click: function() {
-                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
-                        },
-                        klass: "menu-item-1"
+
+                options['Send Group Email'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
                     },
-                    'Start Group Lync Conversation': {
-                            @{
+                    klass: "menu-item-1"
+                };
+                options['Start Group Lync Conversation'] = {
+                    @{
                                 url = Model.DirectReportEmails;
                                 url = "../Lync/StartMulti/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-2"
-                    }
-                });
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-2"
+                };
                 break;
+
             case '@BraceletType.Project.ToString()':
-                $('#centreLabel').contextMenu('context-menu-1', {
-                    'Book Meeting': {
-                            @{
+                options['Book Meeting'] = {
+                    @{
                                 url = Model.DirectReportEmails.Replace("@iress.co.uk", "");
                                 url = url.Replace(".MeetingRoom", " ");
                                 url = url.Replace(".", " ");
                                 url = "../Lync/NewMeeting/?emails=" + url;
                             }
-                        click: function() {
-                            window.location = "@url";
-                        },
-                        klass: "menu-item-1"
+                    click: function() {
+                        window.location = "@url";
                     },
-                    'Send Group Email': {
-                        click: function() {
-                            window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
-                        },
-                        klass: "menu-item-2"
+                    klass: "menu-item-1"
+                };
+                options['Send Group Email'] = {
+                    click: function() {
+                        window.location = "mailto:@Model.DirectReportEmails?subject=@Model.Name";
                     },
-                    'Start Group Lync Conversation': {
-                            @{
+                    klass: "menu-item-2"
+                };
+                options['Start Group Lync Conversation'] = {
+                    @{
                                 url = Model.DirectReportEmails;
                                 url = "../Lync/StartMulti/?emails=" + url;
                             }
-                        click: function() {
-                            window.open("@url");
-                        },
-                        klass: "menu-item-3"
-                    }
-                });
+                    click: function() {
+                        window.open("@url");
+                    },
+                    klass: "menu-item-3"
+                };
                 break;
         }
+
+        // Create context menu with using options
+        $('#centreLabel').contextMenu('context-menu-1', options);
+
+
     });
 
     $(window).resize(function() {
@@ -246,7 +292,7 @@
         newCircle.setAttribute("stroke", "#00FFFF");
         newCircle.setAttribute("stroke-width", "3");
         newCircle.setAttribute("fill", "transparent");
-        svg.appendChild(newCircle); 
+        svg.appendChild(newCircle);
 
         var innerCircle = document.createElementNS(svgNS, 'circle');
         innerCircle.setAttribute("id", "prettyinnerbracelet");
@@ -256,7 +302,7 @@
         innerCircle.setAttribute("stroke", "#0066FF");
         innerCircle.setAttribute("stroke-width", "3");
         innerCircle.setAttribute("fill", "transparent");
-        svg.appendChild(innerCircle); 
+        svg.appendChild(innerCircle);
         var outerCircle = document.createElementNS(svgNS, 'circle');
         outerCircle.setAttribute("id", "prettyouterbracelet");
         outerCircle.setAttribute("cx", mainSvgHalf);
@@ -265,7 +311,7 @@
         outerCircle.setAttribute("stroke", "#0066FF");
         outerCircle.setAttribute("stroke-width", "3");
         outerCircle.setAttribute("fill", "transparent");
-        svg.appendChild(outerCircle); 
+        svg.appendChild(outerCircle);
 
         var labelSize = charmSize * 2;
         var labelx = mainSvgHalf - labelSize / 2;
@@ -289,7 +335,7 @@
         newText.setAttribute("style", "font-weight:bold; text-anchor:middle; font-size:2em; font-family:sans-serif; fill:black; stroke:blue; stroke-width:1;");
         newText.textContent = '@Model.Name';
         svg.appendChild(newText);
-        
+
 
         @foreach (var pic in Model.CharmPics)
         {
@@ -347,5 +393,5 @@
         newText.textContent = targetName;
         newLink.appendChild(newText);
     }
-    
+
 </script>

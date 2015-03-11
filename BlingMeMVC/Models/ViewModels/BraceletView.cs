@@ -7,7 +7,7 @@
 
     public class BraceletView
     {
-        public BraceletView(Bracelet bracelet, string loggedOnUserId)
+        public BraceletView(Bracelet bracelet, Bracelet loggedOnUserBracelet)
         {
             ID = bracelet.ID;
             Name = bracelet.Name;
@@ -15,6 +15,7 @@
             Owner = bracelet.Owner;
             Type = bracelet.Type;
             Email = bracelet.Email;
+            LoggedOnUserBracelet = loggedOnUserBracelet;
 
             Children = new List<Bracelet>();
             Parents = new List<Bracelet>();
@@ -51,7 +52,7 @@
                                  select c.Parent).ToList();
 
                 LoggedOnUserIsChild = bracelet.Charms.Any(c => c.Children
-                    .Any(child => child.Owner == loggedOnUserId && child.Type == BraceletType.Person));
+                    .Any(child => child.ID == loggedOnUserBracelet.ID && child.Type == BraceletType.Person));
             }
 
 
@@ -142,6 +143,7 @@
         public List<Bracelet> StrayParents { get; set; }
         public List<Bracelet> StrayChildren { get; set; }
 
+        public Bracelet LoggedOnUserBracelet { get; set; }
         public bool LoggedOnUserIsChild { get; set; }
     }
 }

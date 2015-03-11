@@ -9,6 +9,7 @@
     using BlingMeMVC.Models.ViewModels;
     using BlingMe.Domain.EF;
     using BlingMe.Domain.Entities;
+using System.Collections.Generic;
 
 
     public class HomeController : Controller
@@ -21,24 +22,13 @@
         {
 
             var repo = uow.GetRepository<Bracelet>();
-            var loggedOnUserId = GetLoggedOnUserId();
 
-            var modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
-                && b.Type == BraceletType.Person).Single();
+            var modelBracelet = GetLoggedOnUserBracelet();
 
+            // When modelBracelet is null - should redirect to "Create Bracelet" for new user????
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
-            
-            /*
-            var mock = new Mocks();
-            var braceletId = (from b in mock.Bracelets
-                              where b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty)
-                              select b.ID).FirstOrDefault();
 
-            // get the user's own bracelet number from EF and redirect to it
-            // User.Identity.Name gives you their Avelo name so this is easy enough
-            return RedirectToRoute("Bracelet", new { id = braceletId });
-             */
         }
 
         [AllowAnonymous]
@@ -50,12 +40,11 @@
 
             var modelBracelet = repo.Get(filter: b => b.ID == id).FirstOrDefault();
 
-            // Dirty hack - investigate this
             var charms = charmsRepo.Get(filter: c => c.ParentID == modelBracelet.ID);
             modelBracelet.Charms = charms.ToList();
 
 
-            return View(new BraceletView(modelBracelet, GetLoggedOnUserId()));
+            return View(new BraceletView(modelBracelet, GetLoggedOnUserBracelet()));
         }
 
         public ActionResult _Search()
@@ -69,10 +58,63 @@
             return RedirectToRoute("Bracelet", new { id = Convert.ToInt32(query) });
         }
 
-
-        private string GetLoggedOnUserId()
+        [HttpPost]
+        public ActionResult AddUser(int parentBraceletId, int userBraceletId)
         {
-            return User.Identity.Name.Replace("AVELO\\", string.Empty);
+            var braceletRepo = uow.GetRepository<Bracelet>();
+            var charmRepo = uow.GetRepository<Charm>();
+
+            // load the userBracelet
+            var userBracelet = braceletRepo.GetByID(userBraceletId);
+
+            var charm = new Charm
+            {
+                ParentID = parentBraceletId,
+                Children = new List<Bracelet> { userBracelet }
+            };
+
+            charmRepo.Insert(charm);
+            uow.Save();
+
+            return RedirectToAction("Bracelet", new { id = parentBraceletId});
+        }
+
+        [HttpPost]
+        public ActionResult RemoveUser(int parentBraceletId, int userBraceletId )
+        {
+            var braceletRepo = uow.GetRepository<Bracelet>();
+            var charmRepo = uow.GetRepository<Charm>();
+
+            // load the userBracelet
+            var userBracelet = braceletRepo.GetByID(userBraceletId);
+
+            // Find charms where the user is a child 
+            var charms = charmRepo.Get(filter: c => c.ParentID == parentBraceletId && c.Children.Any( i => i.ID == userBraceletId),
+                includeProperties: "Children").ToList();
+
+            charms.ForEach(c => 
+                {
+                    c.Children.Remove(userBracelet);
+                    if (c.Children.Count == 0)
+                    {
+                        charmRepo.Delete(c);
+                    }
+                    else
+                    {
+                        charmRepo.Update(c);
+                    }
+                });
+
+            uow.Save();
+            
+            return RedirectToAction("Bracelet", new { id = parentBraceletId });
+        }
+
+        private Bracelet GetLoggedOnUserBracelet()
+        {
+            var loggedOnUserId = User.Identity.Name.Replace("AVELO\\", string.Empty);
+            return uow.GetRepository<Bracelet>().Get(filter: b => b.Owner == loggedOnUserId
+                && b.Type == BraceletType.Person).FirstOrDefault();
         }
     }
 }
