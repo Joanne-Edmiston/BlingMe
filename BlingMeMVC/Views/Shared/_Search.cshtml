@@ -3,7 +3,7 @@
 <link href="~/Content/bootstrap-combobox.css" rel="stylesheet" />
 <script src="~/Content/bootstrap-combobox.js"></script>
 
-@using (Html.BeginForm("_Search", "Home", FormMethod.Post))
+@using (Html.BeginForm("Search", "Home", FormMethod.Post))
 {
     <text>
             <select name="query" class="combobox">
@@ -19,5 +19,28 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.combobox').combobox();
+
+        $('.combobox').keydown(function (e) {
+            // special handling of Enter key
+            if (e.keyCode == 13) {
+                var inputText = $('#secretinput').val();
+
+                // check validity of input
+                switch (inputText.toLowerCase()) {
+                @foreach (var b in Model)
+                {
+                    <text>
+                    case "@b.Name.ToLower()":
+                        location.replace("/BlingMe/Home/Search?query=@b.ID");
+                        break;
+                        </text>
+                }
+                // do not trigger location change on invalid input
+                    default:
+                        break;
+                }
+
+            }
+        });
     });
 </script>

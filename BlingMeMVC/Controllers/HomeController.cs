@@ -1,10 +1,8 @@
 ﻿namespace BlingMeMVC.Controllers
 {
     using System;
-    using System.Data;
     using System.Linq;
     using System.Web.Mvc;
-    using System.Web.Routing;
 
     using BlingMeMVC.Models.ViewModels;
     using BlingMe.Domain.EF;
@@ -60,13 +58,12 @@
 
         public ActionResult _Search()
         {
-            return PartialView(from b in uow.GetRepository<Bracelet>().Get() select b);
+            return PartialView(from b in uow.GetRepository<Bracelet>().Get().OrderBy(b => b.Name) select b);
         }
 
-        [HttpPost]
-        public ActionResult _Search(string query)
+        public ActionResult Search(string query)
         {
-            return RedirectToRoute("Bracelet", new { id = Convert.ToInt32(query) });
+            return RedirectToAction("Bracelet", new { id = Convert.ToInt32(query) });
         }
 
 
