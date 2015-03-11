@@ -272,17 +272,20 @@
         var maxsize = Math.min(window.innerWidth, window.innerHeight);
 
         var circleRadius = maxsize / 2 - 190;
-        var charmSizeRatio = .25;
+        if (circleRadius < 100) {
+            circleRadius = 100;
+        }
 
         var mainSvgWidth = window.innerWidth;
+        var mainSvgHeight = circleRadius * 2.5;
         if (mainSvgWidth > 700) {
             mainSvgWidth = 700;
         }
 
-        var mainSvgHeight = circleRadius * 2.5;
         var mainSvgWidthHalf = mainSvgWidth / 2;
         var mainSvgHeightHalf = mainSvgHeight / 2;
         
+        var charmSizeRatio = .25;
         var charmSize = charmSizeRatio * circleRadius;
 
         var div = document.getElementById('SVGdiv');
