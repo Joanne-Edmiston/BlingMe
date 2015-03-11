@@ -10,11 +10,6 @@
     {
         private readonly EFDbContext db = new EFDbContext();
 
-        public ActionResult Index()
-        {
-            return View(db.Bracelets);
-        }
-
         public ActionResult Details(int id)
         {
             return RedirectToAction("Bracelet", "Home", new { id });
