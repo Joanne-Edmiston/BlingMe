@@ -21,22 +21,23 @@
             var repo = uow.GetRepository<Bracelet>();
             var loggedOnUserId = GetLoggedOnUserId();
 
-            var modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
-                && b.Type == BraceletType.Person).Single();
+            Bracelet modelBracelet;
 
+            try
+            {
+                modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
+                   && b.Type == BraceletType.Person).Single();
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Sequence contains no elements")
+                {
+                    return RedirectToAction("Create", "Bracelet");
+                }
+                return HttpNotFound();
+            }
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
-            
-            /*
-            var mock = new Mocks();
-            var braceletId = (from b in mock.Bracelets
-                              where b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty)
-                              select b.ID).FirstOrDefault();
-
-            // get the user's own bracelet number from EF and redirect to it
-            // User.Identity.Name gives you their Avelo name so this is easy enough
-            return RedirectToRoute("Bracelet", new { id = braceletId });
-             */
         }
 
         [AllowAnonymous]
