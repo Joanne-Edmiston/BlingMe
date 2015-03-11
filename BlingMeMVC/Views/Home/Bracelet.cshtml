@@ -272,22 +272,30 @@
 
         var circleRadius = maxsize / 2 - 190;
         var charmSizeRatio = .25;
-        var mainSvgSize = circleRadius * 2.5;
-        var mainSvgHalf = mainSvgSize / 2;
+
+        var mainSvgWidth = window.innerWidth;
+        if (mainSvgWidth > 700) {
+            mainSvgWidth = 700;
+        }
+
+        var mainSvgHeight = circleRadius * 2.5;
+        var mainSvgWidthHalf = mainSvgWidth / 2;
+        var mainSvgHeightHalf = mainSvgHeight / 2;
+        
         var charmSize = charmSizeRatio * circleRadius;
 
         var div = document.getElementById('SVGdiv');
 
         var svg = document.createElementNS(svgNS, 'svg');
-        svg.setAttribute("width", mainSvgSize);
-        svg.setAttribute("height", mainSvgSize);
+        svg.setAttribute("width", mainSvgWidth);
+        svg.setAttribute("height", mainSvgHeight);
         div.innerHTML= "";
         div.appendChild(svg);
 
         var newCircle = document.createElementNS(svgNS, 'circle');
         newCircle.setAttribute("id", "prettybracelet");
-        newCircle.setAttribute("cx", mainSvgHalf);
-        newCircle.setAttribute("cy", mainSvgHalf);
+        newCircle.setAttribute("cx", mainSvgWidthHalf);
+        newCircle.setAttribute("cy", mainSvgHeightHalf);
         newCircle.setAttribute("r", circleRadius);
         newCircle.setAttribute("stroke", "#00FFFF");
         newCircle.setAttribute("stroke-width", "3");
@@ -296,8 +304,8 @@
 
         var innerCircle = document.createElementNS(svgNS, 'circle');
         innerCircle.setAttribute("id", "prettyinnerbracelet");
-        innerCircle.setAttribute("cx", mainSvgHalf);
-        innerCircle.setAttribute("cy", mainSvgHalf);
+        innerCircle.setAttribute("cx", mainSvgWidthHalf);
+        innerCircle.setAttribute("cy", mainSvgHeightHalf);
         innerCircle.setAttribute("r", circleRadius-3);
         innerCircle.setAttribute("stroke", "#0066FF");
         innerCircle.setAttribute("stroke-width", "3");
@@ -305,8 +313,8 @@
         svg.appendChild(innerCircle);
         var outerCircle = document.createElementNS(svgNS, 'circle');
         outerCircle.setAttribute("id", "prettyouterbracelet");
-        outerCircle.setAttribute("cx", mainSvgHalf);
-        outerCircle.setAttribute("cy", mainSvgHalf);
+        outerCircle.setAttribute("cx", mainSvgWidthHalf);
+        outerCircle.setAttribute("cy", mainSvgHeightHalf);
         outerCircle.setAttribute("r", circleRadius+3);
         outerCircle.setAttribute("stroke", "#0066FF");
         outerCircle.setAttribute("stroke-width", "3");
@@ -314,8 +322,8 @@
         svg.appendChild(outerCircle);
 
         var labelSize = charmSize * 2;
-        var labelx = mainSvgHalf - labelSize / 2;
-        var labely = mainSvgHalf - labelSize / 2 - 20;
+        var labelx = mainSvgWidthHalf - labelSize / 2;
+        var labely = mainSvgHeightHalf - labelSize / 2 - 20;
         var newImage = document.createElementNS(svgNS, 'image');
         newImage.setAttribute("id", "centreLabel");
         newImage.setAttribute("class", "target1");
@@ -340,14 +348,14 @@
         @foreach (var pic in Model.CharmPics)
         {
         <text>
-        drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgSize, @pic.ID, '@pic.Name', '@pic.Email')
+        drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')
         </text>
         }
 
     }
 
 
-    function drawCharm(imageUrl, degrees, svg, charmSize, circleRadius, mainSvgSize, targetID, targetName, targetEmail) {
+    function drawCharm(imageUrl, degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, targetID, targetName, targetEmail) {
         var svgNS = "http://www.w3.org/2000/svg";
         var xlinkNS = "http://www.w3.org/1999/xlink";
 
@@ -355,8 +363,8 @@
         // Centre of circle is mainSvgSize/2,mainSvgSize/2
         // Radius of circle is circleRadius
 
-        var circleCentreX = mainSvgSize / 2;
-        var circleCentreY = mainSvgSize / 2;
+        var circleCentreX = mainSvgWidth / 2;
+        var circleCentreY = mainSvgHeight / 2;
 
         // 0 degrees is the right hand side of the circle
         // proceeding clockwise from there (90, 180, 270)
