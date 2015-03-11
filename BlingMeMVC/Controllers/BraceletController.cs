@@ -1,8 +1,10 @@
 ﻿namespace BlingMeMVC.Controllers
 {
+    using System.Data.Entity;
     using System.Web.Mvc;
 
     using BlingMe.Domain.EF;
+    using BlingMe.Domain.Entities;
 
     public class BraceletController : Controller
     {
@@ -24,58 +26,61 @@
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Bracelet bracelet)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                db.Bracelets.Add(bracelet);
+                db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Bracelet", "Home", new { id = bracelet.ID });
             }
-            catch
-            {
-                return View();
-            }
+            return View(bracelet);
         }
 
         public ActionResult Edit(int id)
         {
-            return View();
+            Bracelet bracelet = db.Bracelets.Find(id);
+            if (bracelet == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bracelet);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Bracelet bracelet)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                db.Entry(bracelet).State = EntityState.Modified;
+                db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Bracelet","Home", new { id = bracelet.ID});
             }
-            catch
-            {
-                return View();
-            }
+            return View(bracelet);
         }
 
         public ActionResult Delete(int id)
         {
-            return View();
+            Bracelet bracelet = db.Bracelets.Find(id);
+            if (bracelet == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bracelet);
         }
 
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var bracelet = db.Bracelets.Find(id);
+            db.Bracelets.Remove(bracelet);
+            db.SaveChanges();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
