@@ -323,7 +323,6 @@
     <Content Include="Views\Bracelet\Create.cshtml" />
     <Content Include="Views\Bracelet\Edit.cshtml" />
     <Content Include="Views\Bracelet\Delete.cshtml" />
-    <Content Include="Views\Bracelet\Index.cshtml" />
     <Content Include="Views\Shared\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>

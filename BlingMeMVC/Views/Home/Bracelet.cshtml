@@ -5,7 +5,7 @@
 }
 <table>
     
-    <tr><td rowspan="2"  style="padding-right: 30px;">
+    <tr><td rowspan="3" style="padding-right: 30px;">
             @{
                 var imgurl = Model.Type.ToString().ToLower();
                 imgurl = "../Content/Images/Charm_" + imgurl + ".png";
@@ -22,6 +22,7 @@
             {
                 <h3>@Model.Description</h3>
             }</td></tr>
+    <tr><td>@Html.ActionLink("Create","Create","Bracelet") | @Html.ActionLink("Edit","Edit","Bracelet",new {id = Model.ID},null) | @Html.ActionLink("Delete","Delete","Bracelet",new {id = Model.ID},null)</td></tr>
 </table>
 @{
 
