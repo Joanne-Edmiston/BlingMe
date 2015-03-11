@@ -22,6 +22,7 @@ namespace BlingMe.Domain.Entities
         public string Owner { get; set; }
         public BraceletType Type { get; set; }
         public string Email { get; set; }
+        public byte[] Avatar { get; set; }
 
         public virtual ICollection<Charm> Charms { get; set; }
     }

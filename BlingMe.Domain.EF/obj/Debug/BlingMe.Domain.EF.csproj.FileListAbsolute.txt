@@ -34,3 +34,5 @@ C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\bin\Debug\EntityFram
 C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\obj\Debug\BlingMe.Domain.EF.csprojResolveAssemblyReference.cache
 C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\obj\Debug\BlingMe.Domain.EF.dll
 C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\obj\Debug\BlingMe.Domain.EF.pdb
+C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\obj\Debug\BlingMe.Domain.EF.Migrations.imagecolumnforbracelets.resources
+C:\Users\gorel\Documents\Projects\BlingMe\BlingMe.Domain.EF\obj\Debug\BlingMe.Domain.EF.csproj.GenerateResource.Cache

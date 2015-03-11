@@ -50,6 +50,10 @@
   <ItemGroup>
     <Compile Include="EFDbContext.cs" />
     <Compile Include="Helpers\IQueryableExensions.cs" />
+    <Compile Include="Migrations\201503111551540_image column for bracelets.cs" />
+    <Compile Include="Migrations\201503111551540_image column for bracelets.Designer.cs">
+      <DependentUpon>201503111551540_image column for bracelets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\EntityRepository.cs" />
@@ -64,6 +68,11 @@
       <Project>{6cb4d106-bbe9-4d0d-8470-9572da105bb4}</Project>
       <Name>BlingMe.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503111551540_image column for bracelets.resx">
+      <DependentUpon>201503111551540_image column for bracelets.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
