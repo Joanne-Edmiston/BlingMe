@@ -1,10 +1,8 @@
 ﻿namespace BlingMeMVC.Controllers
 {
     using System;
-    using System.Data;
     using System.Linq;
     using System.Web.Mvc;
-    using System.Web.Routing;
 
     using BlingMeMVC.Models.ViewModels;
     using BlingMe.Domain.EF;
@@ -23,12 +21,35 @@ using System.Collections.Generic;
 
             var repo = uow.GetRepository<Bracelet>();
 
-            var modelBracelet = GetLoggedOnUserBracelet();
+            Bracelet modelBracelet;
 
-            // When modelBracelet is null - should redirect to "Create Bracelet" for new user????
+            try
+            {
+                modelBracelet = repo.Get(filter: b => b.Owner == loggedOnUserId
+                   && b.Type == BraceletType.Person).Single();
+            }
+            catch (Exception e)
+            {
+                if (e.Message == "Sequence contains no elements")
+                {
+                    return RedirectToAction("Create", "Bracelet");
+                }
+                return HttpNotFound();
+            }
+
 
             return RedirectToRoute("Bracelet", new { id = modelBracelet.ID });
+            
+            /*
+            var mock = new Mocks();
+            var braceletId = (from b in mock.Bracelets
+                              where b.Owner == User.Identity.Name.Replace("AVELO\\", string.Empty)
+                              select b.ID).FirstOrDefault();
 
+            // get the user's own bracelet number from EF and redirect to it
+            // User.Identity.Name gives you their Avelo name so this is easy enough
+            return RedirectToRoute("Bracelet", new { id = braceletId });
+             */
         }
 
         [AllowAnonymous]
@@ -49,13 +70,12 @@ using System.Collections.Generic;
 
         public ActionResult _Search()
         {
-            return PartialView(from b in uow.GetRepository<Bracelet>().Get() select b);
+            return PartialView(from b in uow.GetRepository<Bracelet>().Get().OrderBy(b => b.Name) select b);
         }
 
-        [HttpPost]
-        public ActionResult _Search(string query)
+        public ActionResult Search(string query)
         {
-            return RedirectToRoute("Bracelet", new { id = Convert.ToInt32(query) });
+            return RedirectToAction("Bracelet", new { id = Convert.ToInt32(query) });
         }
 
         [HttpPost]
@@ -106,7 +126,7 @@ using System.Collections.Generic;
                 });
 
             uow.Save();
-            
+
             return RedirectToAction("Bracelet", new { id = parentBraceletId });
         }
 
