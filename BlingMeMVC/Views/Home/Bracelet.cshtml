@@ -60,53 +60,43 @@
         });
 
         var options = {};
-        var addMeMenuOption = {
-            click: function() {
-
-                $.ajax({
-                    url: '../home/AddUser',
-                    type: 'POST',
-                    data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
-                    success: function(result) {
-                    }
-                });
-            },
-            klass: "menu-item-1"
-        };
-
-        var removeMeMenuOption = {
-            click: function() {
-
-                $.ajax({
-                    url: '../home/RemoveUser',
-                    type: 'POST',
-                    data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
-                    success: function(result) {
-                    }
-                });
-            },
-            klass: "menu-item-1"
-        };
-
-        if ('@Model.LoggedOnUserIsChild' === '@true'){
-            options['Remove Me'] = {
-                click: function() {
 
 
-                    $.ajax({
-                        url: '../home/RemoveUser',
-                        type: 'POST',
-                        data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
-                        success: function(result) {
-                        }
-                    });
-                },
-                klass: "menu-item-1"
+        if ('@Model.ID' != '@Model.LoggedOnUserBracelet.ID'){
+            if ('@Model.LoggedOnUserIsChild' === '@true'){
+                options['Remove Me'] = {
+                    click: function() {
+
+                        $.ajax({
+                            url: '../home/RemoveUser',
+                            type: 'POST',
+                            data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
+                            cache: false,
+                            success: function(result) {
+                                window.location.href = result.Url;
+                            }
+                        });
+                    },
+                    klass: "menu-item-1"
+                };
+            }
+            else{
+                options['Add Me'] = {
+                    click: function() {
+
+                        $.ajax({
+                            url: '../home/AddUser',
+                            type: 'POST',
+                            data: { parentBraceletId: '@Model.ID', userBraceletId: '@Model.LoggedOnUserBracelet.ID' },
+                            success: function(result) {
+                                window.location.href = result.Url;
+                            }
+                        });
+                    },
+                    klass: "menu-item-1"
+                };
             };
         }
-        else{
-            options['Add Me'] = addMeMenuOption;
-        };
 
         switch('@Model.Type.ToString()') {
             case '@BraceletType.Person.ToString()':
