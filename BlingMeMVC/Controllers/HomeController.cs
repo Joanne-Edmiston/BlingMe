@@ -73,7 +73,8 @@
             charmRepo.Insert(charm);
             uow.Save();
 
-            return RedirectToAction("Bracelet", new { id = parentBraceletId });
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Bracelet", "Home", new { id = parentBraceletId } );
+            return Json(new { Url = redirectUrl });
         }
 
         [HttpPost]
@@ -104,7 +105,8 @@
 
             uow.Save();
 
-            return RedirectToAction("Bracelet", new { id = parentBraceletId });
+            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Bracelet", "Home", new { id = parentBraceletId });
+            return Json(new { Url = redirectUrl });
         }
 
         private Bracelet GetLoggedOnUserBracelet()
