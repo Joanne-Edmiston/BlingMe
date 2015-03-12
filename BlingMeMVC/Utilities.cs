@@ -16,9 +16,7 @@
                 return string.Empty;
             }
 
-            byte[] imageByteData = bracelet.Avatar;
-            string imageBase64Data = Convert.ToBase64String(imageByteData);
-            return string.Format("data:image/png;base64,{0}", imageBase64Data);
+            return string.Format("data:image/png;base64,{0}", Convert.ToBase64String(bracelet.Avatar));
         }
     }
 }
