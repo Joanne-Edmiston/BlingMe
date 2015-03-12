@@ -1,10 +1,13 @@
 ﻿namespace BlingMeMVC.Controllers
 {
+    using System;
     using System.Data.Entity;
     using System.Web.Mvc;
 
     using BlingMe.Domain.EF;
     using BlingMe.Domain.Entities;
+
+    using BlingMeMVC.Models.ViewModels;
 
     public class BraceletController : Controller
     {
@@ -31,6 +34,56 @@
                 return RedirectToAction("Bracelet", "Home", new { id = bracelet.ID });
             }
             return View(bracelet);
+        }
+
+        public ActionResult GetImageUrlString(int id)
+        {
+            Bracelet bracelet = db.Bracelets.Find(id);
+            if (bracelet == null || bracelet.Avatar == null)
+            {
+                return Content(string.Empty);
+            }
+
+            byte[] imageByteData = bracelet.Avatar;
+            string imageBase64Data = Convert.ToBase64String(imageByteData);
+            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+            return Content(imageDataURL);
+        }
+
+        public ActionResult ChangeAvatar(int id)
+        {
+            Bracelet bracelet = db.Bracelets.Find(id);
+            if (bracelet == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = new Avatar
+            {
+                ID = id,
+                Bracelet = bracelet
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeAvatar(Avatar avatar)
+        {
+            if (ModelState.IsValid)
+            {
+                var newPic = new byte[avatar.File.InputStream.Length];
+                avatar.File.InputStream.Read(newPic, 0, newPic.Length);
+
+                var bracelet = db.Bracelets.Find(avatar.ID);
+                bracelet.Avatar = newPic;
+                db.Entry(bracelet).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Bracelet", "Home", new { id = avatar.ID });
+            }
+            return View(avatar);
         }
 
         public ActionResult Edit(int id)

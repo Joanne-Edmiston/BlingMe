@@ -6,12 +6,17 @@
 <table>
     
     <tr><td rowspan="3" style="padding-right: 30px;">
-            @{
-                var imgurl = Model.Type.ToString().ToLower();
+            @if (Model.Avatar == null)
+            {
+                int imgsize = 100;
+                string imgurl = Model.Type.ToString().ToLower();
                 imgurl = "../Content/Images/Charm_" + imgurl + ".png";
-                var imgsize = 100;
+            <img src="@imgurl" height="@imgsize"/>
+            } else
+            {
+                int imgsize = 100;
+            <img src="@Html.Action("GetImageUrlString", "Bracelet", new { id = Model.ID })" height="@imgsize"/>
             }
-            <img src="@imgurl" height="@imgsize" width="@imgsize"/>
         </td><td>
                  <h2>@Model.Name</h2></td></tr>
     <tr><td>@if (null == Model.Description || Model.Description.Length <= 1)
@@ -22,7 +27,7 @@
             {
                 <h3>@Model.Description</h3>
             }</td></tr>
-    <tr><td>@Html.ActionLink("Create","Create","Bracelet") | @Html.ActionLink("Edit","Edit","Bracelet",new {id = Model.ID},null) | @Html.ActionLink("Delete","Delete","Bracelet",new {id = Model.ID},null)</td></tr>
+    <tr><td>@Html.ActionLink("Create","Create","Bracelet") | @Html.ActionLink("Edit","Edit","Bracelet",new {id = Model.ID},null) | @Html.ActionLink("Change Avatar","ChangeAvatar","Bracelet",new {id = Model.ID},null) | @Html.ActionLink("Delete","Delete","Bracelet",new {id = Model.ID},null)</td></tr>
 </table>
 @{
 
@@ -284,7 +289,7 @@
 
         var mainSvgWidthHalf = mainSvgWidth / 2;
         var mainSvgHeightHalf = mainSvgHeight / 2;
-        
+
         var charmSizeRatio = .25;
         var charmSize = charmSizeRatio * circleRadius;
 
@@ -293,7 +298,7 @@
         var svg = document.createElementNS(svgNS, 'svg');
         svg.setAttribute("width", mainSvgWidth);
         svg.setAttribute("height", mainSvgHeight);
-        div.innerHTML= "";
+        div.innerHTML = "";
         div.appendChild(svg);
 
         var newCircle = document.createElementNS(svgNS, 'circle');
@@ -310,7 +315,7 @@
         innerCircle.setAttribute("id", "prettyinnerbracelet");
         innerCircle.setAttribute("cx", mainSvgWidthHalf);
         innerCircle.setAttribute("cy", mainSvgHeightHalf);
-        innerCircle.setAttribute("r", circleRadius-3);
+        innerCircle.setAttribute("r", circleRadius - 3);
         innerCircle.setAttribute("stroke", "#0066FF");
         innerCircle.setAttribute("stroke-width", "3");
         innerCircle.setAttribute("fill", "transparent");
@@ -319,7 +324,7 @@
         outerCircle.setAttribute("id", "prettyouterbracelet");
         outerCircle.setAttribute("cx", mainSvgWidthHalf);
         outerCircle.setAttribute("cy", mainSvgHeightHalf);
-        outerCircle.setAttribute("r", circleRadius+3);
+        outerCircle.setAttribute("r", circleRadius + 3);
         outerCircle.setAttribute("stroke", "#0066FF");
         outerCircle.setAttribute("stroke-width", "3");
         outerCircle.setAttribute("fill", "transparent");
@@ -336,10 +341,21 @@
         newImage.setAttribute("x", labelx);
         newImage.setAttribute("y", labely);
         newImage.setAttribute("background-color", "red");
-        newImage.setAttributeNS(xlinkNS, "href", "../Content/Images/Charm_"+'@Model.Type.ToString().ToLower()'+".png");
+        @{
+            string imageUrl;
+            if (Model.Avatar == null)
+            {
+                imageUrl = "../Content/Images/Charm_" + Model.Type + ".png";
+            }
+            else
+            {
+                imageUrl = Html.Action("GetImageUrlString", "Bracelet", new { id = Model.ID }).ToString();
+            }
+        }
+        newImage.setAttributeNS(xlinkNS, "href", "@imageUrl");
         svg.appendChild(newImage);
 
-        var textX = labelx + labelSize/2;
+        var textX = labelx + labelSize / 2;
         var textY = labely + labelSize + 20;
         var newText = document.createElementNS(svgNS, 'text');
         newText.setAttribute("x", textX);
@@ -348,16 +364,16 @@
         newText.textContent = '@Model.Name';
         svg.appendChild(newText);
 
-
         @foreach (var pic in Model.CharmPics)
         {
-        <text>
-        drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')
-        </text>
+                var picUrl = Html.Action("GetImageUrlString", "Bracelet", new { id = pic.ID });
+                if (picUrl != null && picUrl.ToString().Length > 0)
+                {
+                    pic.ImageUrl = picUrl.ToString();
+                }
+                <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')</text>
         }
-
-    }
-
+}
 
     function drawCharm(imageUrl, degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, targetID, targetName, targetEmail) {
         var svgNS = "http://www.w3.org/2000/svg";

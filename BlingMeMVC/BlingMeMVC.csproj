@@ -189,6 +189,7 @@
     </Compile>
     <Compile Include="LyncCode.cs" />
     <Compile Include="Mocks.cs" />
+    <Compile Include="Models\ViewModels\Avatar.cs" />
     <Compile Include="Models\ViewModels\BraceletView.cs" />
     <Compile Include="Models\ViewModels\CharmPic.cs" />
     <Compile Include="Models\ViewModels\CharmView.cs" />
@@ -324,6 +325,7 @@
     <Content Include="Views\Bracelet\Edit.cshtml" />
     <Content Include="Views\Bracelet\Delete.cshtml" />
     <Content Include="Views\Shared\_Search.cshtml" />
+    <Content Include="Views\Bracelet\ChangeAvatar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

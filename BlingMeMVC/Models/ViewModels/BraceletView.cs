@@ -15,6 +15,7 @@
             Owner = bracelet.Owner;
             Type = bracelet.Type;
             Email = bracelet.Email;
+            Avatar = bracelet.Avatar;
             LoggedOnUserBracelet = loggedOnUserBracelet;
 
             Children = new List<Bracelet>();
@@ -133,6 +134,8 @@
         public string DisplayName { get; set; }
 
         public string Name { get; set; }
+
+        public byte[] Avatar { get; set; }
 
         public string DirectReportEmails { get; set; }
 

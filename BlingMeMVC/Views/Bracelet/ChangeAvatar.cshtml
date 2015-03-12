@@ -1,0 +1,50 @@
+﻿@model BlingMeMVC.Models.ViewModels.Avatar
+
+
+@{
+    ViewBag.Title = "AddAvatar";
+}
+
+<h2>Change Avatar for @Model.Bracelet.Name</h2>
+
+@using (Html.BeginForm("ChangeAvatar", "Bracelet", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Avatar</legend>
+        
+        @if (Model.Bracelet.Avatar == null)
+        {
+            <div>Current avatar is default.</div>
+        }
+        else
+        {
+            <div>
+                Current avatar:<br/><img src="@Html.Action("GetImageUrlString",new { id = Model.ID})" height="100"/>
+            </div>
+        }
+        
+        <div>
+            Please upload an image in jpg or png.
+        </div>
+
+        <div>
+            <input type="file" name="File" id="File" />
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+    
+    <div>
+        @Html.ActionLink("Go back to Bracelet","Bracelet","Home", new { id = Model.ID},null)
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
