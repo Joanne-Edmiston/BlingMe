@@ -82,7 +82,7 @@
 
 
             CharmPics = new List<CharmPic>();
-            var picGap = 30;
+            const int PicGap = 30; // degrees
 
             if (Parents.Count() == 1)
             {
@@ -91,11 +91,19 @@
             } 
             else if (Parents.Count() > 1 && Parents.Count() < 6)
             {
-                var parentDrawStart = -90 - (picGap * (Parents.Count() / 2));
+                var parentDrawStart = -90 - (PicGap * (Parents.Count() / 2));
                 for (int i = 0; i < Parents.Count(); i++)
                 {
                     CharmPics.Add(new CharmPic(Parents[i]));
-                    CharmPics.Last().Degrees = parentDrawStart + (picGap * i);
+                    CharmPics.Last().Degrees = parentDrawStart + (PicGap * i);
+                }
+            }
+            else
+            {
+                foreach (var parent in Parents)
+                {
+                    CharmPics.Add(new CharmPic(parent));
+                    CharmPics.Last().OffBracelet = true;
                 }
             }
 
@@ -106,26 +114,34 @@
             }
             else if (Children.Count() > 1 && Children.Count() < 6)
             {
-                var childDrawStart = 90 - (picGap * (Children.Count() / 2));
+                var childDrawStart = 90 - (PicGap * (Children.Count() / 2));
                 for (int i = 0; i < Children.Count(); i++)
                 {
                     CharmPics.Add(new CharmPic(Children[i]));
-                    CharmPics.Last().Degrees = childDrawStart + (picGap * i);
+                    CharmPics.Last().Degrees = childDrawStart + (PicGap * i);
+                }
+            }
+            else
+            {
+                foreach (var child in Children)
+                {
+                    CharmPics.Add(new CharmPic(child));
+                    CharmPics.Last().OffBracelet = true;
                 }
             }
 
-            var strayParentDrawStart = 180 - (picGap * (StrayParents.Count() / 2));
+            var strayParentDrawStart = 180 - (PicGap * (StrayParents.Count() / 2));
             for (int i = 0; i < StrayParents.Count(); i++)
             {
                 CharmPics.Add(new CharmPic(StrayParents[i]));
-                CharmPics.Last().Degrees = strayParentDrawStart + (picGap * i);
+                CharmPics.Last().Degrees = strayParentDrawStart + (PicGap * i);
             }
 
-            var strayChildDrawStart = 0 - (picGap * (StrayChildren.Count() / 2));
+            var strayChildDrawStart = 0 - (PicGap * (StrayChildren.Count() / 2));
             for (int i = 0; i < StrayChildren.Count(); i++)
             {
                 CharmPics.Add(new CharmPic(StrayChildren[i]));
-                CharmPics.Last().Degrees = strayChildDrawStart + (picGap * i);
+                CharmPics.Last().Degrees = strayChildDrawStart + (PicGap * i);
             }
         }
 

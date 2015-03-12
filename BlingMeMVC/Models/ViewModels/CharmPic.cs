@@ -19,7 +19,11 @@
             {
                 ImageUrl = Utilities.GetImageUrlString(ID);
             }
+
+            OffBracelet = false;
         }
+
+        public bool OffBracelet { get; set; }
 
         public int Degrees { get; set; }
 

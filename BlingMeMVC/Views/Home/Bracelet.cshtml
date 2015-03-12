@@ -28,6 +28,15 @@
 <div id="SVGdiv" style="padding-top:0;margin-top:0;text-align: center">
 </div>
 
+<div>offbracelet charms: <ul> @foreach (var p in Model.CharmPics)
+                         {
+                             if (!p.OffBracelet)
+                             {
+                                 continue;
+                             }
+                             <text><li>@Html.ActionLink(p.Name,"Bracelet","Home",new { id = p.ID},null)</li></text>
+                         }</ul></div>
+
 <link href="../Content/jquery.contextMenu.css" rel="stylesheet" />
 <script src="../Content/jquery.contextMenu.js" type="text/javascript" charset="utf-8"></script>
 
@@ -335,7 +344,11 @@
 
         @foreach (var pic in Model.CharmPics)
         {
-                <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')</text>
+            if (pic.OffBracelet)
+            {
+                continue;
+            }
+            <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')</text>
         }
 }
 
