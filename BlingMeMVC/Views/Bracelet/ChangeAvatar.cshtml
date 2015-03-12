@@ -1,11 +1,12 @@
-﻿@model BlingMeMVC.Models.ViewModels.Avatar
+﻿@using BlingMeMVC
+@model BlingMeMVC.Models.ViewModels.Avatar
 
 
 @{
-    ViewBag.Title = "AddAvatar";
+    ViewBag.Title = "Change Avatar for " + Model.Bracelet.Name;
 }
 
-<h2>Change Avatar for @Model.Bracelet.Name</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("ChangeAvatar", "Bracelet", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -23,7 +24,7 @@
         else
         {
             <div>
-                Current avatar:<br/><img src="@Html.Action("GetImageUrlString",new { id = Model.ID})" height="100"/>
+                Current avatar:<br/><img src="@Utilities.GetImageUrlString(Model.Bracelet.ID)" height="100"/>
             </div>
         }
         
@@ -41,7 +42,7 @@
     </fieldset>
     
     <div>
-        @Html.ActionLink("Go back to Bracelet","Bracelet","Home", new { id = Model.ID},null)
+        @Html.ActionLink("Go back to Bracelet","Bracelet","Home", new { id = Model.Bracelet.ID},null)
     </div>
 }
 

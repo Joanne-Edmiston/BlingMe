@@ -6,17 +6,7 @@
 <table>
     
     <tr><td rowspan="3" style="padding-right: 30px;">
-            @if (Model.Avatar == null)
-            {
-                int imgsize = 100;
-                string imgurl = Model.Type.ToString().ToLower();
-                imgurl = "../Content/Images/Charm_" + imgurl + ".png";
-            <img src="@imgurl" height="@imgsize"/>
-            } else
-            {
-                int imgsize = 100;
-            <img src="@Html.Action("GetImageUrlString", "Bracelet", new { id = Model.ID })" height="@imgsize"/>
-            }
+            <img src="@Model.ImageUrl" height="100" />
         </td><td>
                  <h2>@Model.Name</h2></td></tr>
     <tr><td>@if (null == Model.Description || Model.Description.Length <= 1)
@@ -331,18 +321,7 @@
         newImage.setAttribute("x", labelx);
         newImage.setAttribute("y", labely);
         newImage.setAttribute("background-color", "red");
-        @{
-            string imageUrl;
-            if (Model.Avatar == null)
-            {
-                imageUrl = "../Content/Images/Charm_" + Model.Type + ".png";
-            }
-            else
-            {
-                imageUrl = Html.Action("GetImageUrlString", "Bracelet", new { id = Model.ID }).ToString();
-            }
-        }
-        newImage.setAttributeNS(xlinkNS, "href", "@imageUrl");
+        newImage.setAttributeNS(xlinkNS, "href", "@Model.ImageUrl");
         svg.appendChild(newImage);
 
         var textX = labelx + labelSize / 2;
@@ -356,11 +335,6 @@
 
         @foreach (var pic in Model.CharmPics)
         {
-                var picUrl = Html.Action("GetImageUrlString", "Bracelet", new { id = pic.ID });
-                if (picUrl != null && picUrl.ToString().Length > 0)
-                {
-                    pic.ImageUrl = picUrl.ToString();
-                }
                 <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')</text>
         }
 }

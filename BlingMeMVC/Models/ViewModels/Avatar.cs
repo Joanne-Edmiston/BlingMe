@@ -1,7 +1,6 @@
 ﻿namespace BlingMeMVC.Models.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Drawing;
     using System.Web;
 
     using BlingMe.Domain.Entities;
@@ -13,8 +12,6 @@
 
         [Required]
         public int ID { get; set; }
-
-        public Image Image { get; set; }
 
         public virtual Bracelet Bracelet { get; set; }
     }

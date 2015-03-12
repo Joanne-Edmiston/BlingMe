@@ -1,6 +1,5 @@
 ﻿namespace BlingMeMVC.Controllers
 {
-    using System;
     using System.Data.Entity;
     using System.Web.Mvc;
 
@@ -34,20 +33,6 @@
                 return RedirectToAction("Bracelet", "Home", new { id = bracelet.ID });
             }
             return View(bracelet);
-        }
-
-        public ActionResult GetImageUrlString(int id)
-        {
-            Bracelet bracelet = db.Bracelets.Find(id);
-            if (bracelet == null || bracelet.Avatar == null)
-            {
-                return Content(string.Empty);
-            }
-
-            byte[] imageByteData = bracelet.Avatar;
-            string imageBase64Data = Convert.ToBase64String(imageByteData);
-            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-            return Content(imageDataURL);
         }
 
         public ActionResult ChangeAvatar(int id)

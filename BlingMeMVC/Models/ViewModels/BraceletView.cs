@@ -16,6 +16,15 @@
             Type = bracelet.Type;
             Email = bracelet.Email;
             Avatar = bracelet.Avatar;
+            if (Avatar == null)
+            {
+                ImageUrl = "../Content/Images/Charm_"
+                           + bracelet.Type.ToString().ToLower() + ".png";
+            }
+            else
+            {
+                ImageUrl = Utilities.GetImageUrlString(ID);
+            }
             LoggedOnUserBracelet = loggedOnUserBracelet;
 
             Children = new List<Bracelet>();
@@ -148,5 +157,7 @@
 
         public Bracelet LoggedOnUserBracelet { get; set; }
         public bool LoggedOnUserIsChild { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

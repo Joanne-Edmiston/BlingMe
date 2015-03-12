@@ -9,8 +9,16 @@
             Name = bracelet.Name;
             ID = bracelet.ID;
             Email = bracelet.Email;
-            ImageUrl = "../Content/Images/Charm_"
-                       + bracelet.Type.ToString().ToLower() +".png";
+
+            if (bracelet.Avatar == null)
+            {
+                ImageUrl = "../Content/Images/Charm_"
+                           + bracelet.Type.ToString().ToLower() + ".png";
+            }
+            else
+            {
+                ImageUrl = Utilities.GetImageUrlString(ID);
+            }
         }
 
         public int Degrees { get; set; }
