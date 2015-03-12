@@ -29,13 +29,13 @@
 </div>
 
 <div>offbracelet charms: <ul> @foreach (var p in Model.CharmPics)
-                         {
-                             if (!p.OffBracelet)
-                             {
-                                 continue;
-                             }
-                             <text><li>@Html.ActionLink(p.Name,"Bracelet","Home",new { id = p.ID},null)</li></text>
-                         }</ul></div>
+                              {
+                                  if (!p.OffBracelet)
+                                  {
+                                      continue;
+                                  }
+                                  <text><li>@p.Location.ToString(): <a href="@Url.Action("Bracelet", "Home", new { id = p.Bracelet.ID })"><img src="@p.ImageUrl" height="30"/> @p.Bracelet.Name</a></li></text>
+                              }</ul></div>
 
 <link href="../Content/jquery.contextMenu.css" rel="stylesheet" />
 <script src="../Content/jquery.contextMenu.js" type="text/javascript" charset="utf-8"></script>
@@ -348,7 +348,7 @@
             {
                 continue;
             }
-            <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.ID, '@pic.Name', '@pic.Email')</text>
+            <text>drawCharm('@pic.ImageUrl', @pic.Degrees, svg, charmSize, circleRadius, mainSvgHeight, mainSvgWidth, @pic.Bracelet.ID, '@pic.Bracelet.Name', '@pic.Bracelet.Email')</text>
         }
 }
 

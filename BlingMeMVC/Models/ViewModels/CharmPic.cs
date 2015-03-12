@@ -4,20 +4,27 @@
 
     public class CharmPic
     {
-        public CharmPic(Bracelet bracelet)
+        public enum CharmLocation
         {
-            Name = bracelet.Name;
-            ID = bracelet.ID;
-            Email = bracelet.Email;
+            Child,
+            Parent,
+            StrayChild,
+            StrayParent
+        }
 
-            if (bracelet.Avatar == null)
+        public CharmPic(Bracelet bracelet, CharmLocation location)
+        {
+            Location = location;
+            Bracelet = bracelet;
+
+            if (Bracelet.Avatar == null)
             {
                 ImageUrl = "../Content/Images/Charm_"
                            + bracelet.Type.ToString().ToLower() + ".png";
             }
             else
             {
-                ImageUrl = Utilities.GetImageUrlString(ID);
+                ImageUrl = Utilities.GetImageUrlString(bracelet.ID);
             }
 
             OffBracelet = false;
@@ -25,15 +32,12 @@
 
         public bool OffBracelet { get; set; }
 
+        public CharmLocation Location { get; set; }
+
         public int Degrees { get; set; }
 
         public string ImageUrl { get; set; }
 
-        public string Name { get; set; }
-
-        public int ID { get; set; }
-
-
-        public string Email { get; set; }
+        public virtual Bracelet Bracelet { get; set; }
     }
 }

@@ -86,7 +86,7 @@
 
             if (Parents.Count() == 1)
             {
-                CharmPics.Add(new CharmPic(Parents.First()));
+                CharmPics.Add(new CharmPic(Parents.First(), CharmPic.CharmLocation.Parent));
                 CharmPics.Last().Degrees = -90;
             } 
             else if (Parents.Count() > 1 && Parents.Count() < 6)
@@ -94,7 +94,7 @@
                 var parentDrawStart = -90 - (PicGap * (Parents.Count() / 2));
                 for (int i = 0; i < Parents.Count(); i++)
                 {
-                    CharmPics.Add(new CharmPic(Parents[i]));
+                    CharmPics.Add(new CharmPic(Parents[i], CharmPic.CharmLocation.Parent));
                     CharmPics.Last().Degrees = parentDrawStart + (PicGap * i);
                 }
             }
@@ -102,14 +102,14 @@
             {
                 foreach (var parent in Parents)
                 {
-                    CharmPics.Add(new CharmPic(parent));
+                    CharmPics.Add(new CharmPic(parent, CharmPic.CharmLocation.Parent));
                     CharmPics.Last().OffBracelet = true;
                 }
             }
 
             if (Children.Count() == 1)
             {
-                CharmPics.Add(new CharmPic(Children.First()));
+                CharmPics.Add(new CharmPic(Children.First(), CharmPic.CharmLocation.Child));
                 CharmPics.Last().Degrees = 90;
             }
             else if (Children.Count() > 1 && Children.Count() < 6)
@@ -117,7 +117,7 @@
                 var childDrawStart = 90 - (PicGap * (Children.Count() / 2));
                 for (int i = 0; i < Children.Count(); i++)
                 {
-                    CharmPics.Add(new CharmPic(Children[i]));
+                    CharmPics.Add(new CharmPic(Children[i], CharmPic.CharmLocation.Child));
                     CharmPics.Last().Degrees = childDrawStart + (PicGap * i);
                 }
             }
@@ -125,7 +125,7 @@
             {
                 foreach (var child in Children)
                 {
-                    CharmPics.Add(new CharmPic(child));
+                    CharmPics.Add(new CharmPic(child, CharmPic.CharmLocation.Child));
                     CharmPics.Last().OffBracelet = true;
                 }
             }
@@ -133,14 +133,14 @@
             var strayParentDrawStart = 180 - (PicGap * (StrayParents.Count() / 2));
             for (int i = 0; i < StrayParents.Count(); i++)
             {
-                CharmPics.Add(new CharmPic(StrayParents[i]));
+                CharmPics.Add(new CharmPic(StrayParents[i], CharmPic.CharmLocation.StrayParent));
                 CharmPics.Last().Degrees = strayParentDrawStart + (PicGap * i);
             }
 
             var strayChildDrawStart = 0 - (PicGap * (StrayChildren.Count() / 2));
             for (int i = 0; i < StrayChildren.Count(); i++)
             {
-                CharmPics.Add(new CharmPic(StrayChildren[i]));
+                CharmPics.Add(new CharmPic(StrayChildren[i], CharmPic.CharmLocation.StrayChild));
                 CharmPics.Last().Degrees = strayChildDrawStart + (PicGap * i);
             }
         }
